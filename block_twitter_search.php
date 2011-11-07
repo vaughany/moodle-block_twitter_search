@@ -46,6 +46,8 @@ class block_twitter_search extends block_base{
      $author = $tweet->getElementsByTagName('author')->item(0);
      $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
      $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
+     $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
+     $output .= "<img src='$author_img' />";
      $output .= "<a href='$authorlink'>$authorname</a>: ";
      $output .= format_text($tweet->getElementsByTagName('content')->item(0)->textContent,FORMAT_HTML);
      $output .= "</li>";

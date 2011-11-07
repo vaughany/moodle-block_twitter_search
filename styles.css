@@ -13,3 +13,8 @@ li.tweet {
   padding:4px;
   list-style: none;
 }
+
+li img {
+  float: left;
+  margin-right: 3px;
+}
