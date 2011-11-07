@@ -13,7 +13,8 @@ class block_twitter_search extends block_base{
 
    $search_term = $this->config->search_term;
    $search_term_enc = urlencode($this->config->search_term);
-   $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=10";
+   $numtweets = $this->config->numtweets;
+   $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
    $ch = curl_init($url);
    curl_setopt($ch, CURLOPT_HEADER,0);
    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -34,7 +35,6 @@ class block_twitter_search extends block_base{
 
     $this->content = new stdClass;
     $this->content->text = $output;
-    $this->content->footer = "The footer!";
   }
 
   public function instance_allow_config(){
