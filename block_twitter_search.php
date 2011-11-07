@@ -34,6 +34,7 @@ class block_twitter_search extends block_base{
    }
 
     $this->content = new stdClass;
+    $this->title = $search_term . get_string('on_twitter','block_twitter_search');
     $this->content->text = $output;
   }
 
