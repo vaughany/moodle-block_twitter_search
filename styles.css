@@ -11,4 +11,5 @@ text-align:left;
 li.tweet {
   border-top:1px dotted #aaa;
   padding:4px;
+  list-style: none;
 }
