@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Twitter Search Block for Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 // Copyright Kevin Hughes 2011
 
@@ -27,7 +27,6 @@ class block_twitter_search extends block_base{
         }
 
         $output = "";
-
         $search_term = $this->config->search_term;
         $search_term_enc = urlencode($this->config->search_term);
         $numtweets = $this->config->numtweets;
