@@ -21,4 +21,4 @@
     $plugin->version = 20111207151800;
     $plugin->requires = 2010112400;
     $plugin->maturity = MATURITY_BETA;
-    $plugin->release = "0.1"
+    $plugin->release = "0.1";
