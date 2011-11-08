@@ -13,3 +13,5 @@ of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Publ
 details: http://www.gnu.org/copyleft/gpl.html
 
 More information is available at the project's github page: https://github.com/kevtufc/Twitter-Search-Block-for-Moodle2
+
+Note: If you're downloading this from github you'll want to put it all in a directory called blocks/twitter_search
