@@ -15,3 +15,6 @@ details: http://www.gnu.org/copyleft/gpl.html
 More information is available at the project's github page: https://github.com/kevtufc/moodle-block_twitter_search
 
 Note: If you're downloading this from github you'll want to put it all in a directory called blocks/twitter_search
+
+Multilingual support and Hebrew translation by Nadav Kavalerchik
+Catalan translation by Joan Queralt
