@@ -43,7 +43,7 @@ class block_twitter_search extends block_base{
             foreach ($tweets as $tweet) {
                 $output .= "<li class='tweet'>";
                 $author = $tweet->getElementsByTagName('author')->item(0);
-            $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
+                $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
                 $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
                 $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
                 $output .= "<img src='$author_img' />";
@@ -51,7 +51,7 @@ class block_twitter_search extends block_base{
                 $output .= format_text($tweet->getElementsByTagName('content')->item(0)->textContent,FORMAT_HTML);
                 $output .= "</li>";
             }
-            
+
             $this->content = new stdClass;
             $this->title = $search_term . get_string('on_twitter','block_twitter_search');
             $this->content->text = $output;
@@ -61,10 +61,14 @@ class block_twitter_search extends block_base{
             $this->content = new stdClass;
             $this->content->text = get_string('not_found', 'block_twitter_search');
         }
-        
+
     }
 
     public function instance_allow_config(){
+        return true;
+    }
+
+    public function instance_allow_multiple(){
         return true;
     }
 }
