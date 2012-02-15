@@ -17,7 +17,8 @@
 // Copyright Kevin Hughes 2011
 //
 // Version Info
-    $plugin->version = 20120126104701; //ACK!
-    $plugin->requires = 2010112400;
-    $plugin->maturity = MATURITY_BETA;
-    $plugin->release = "0.1.2";
+
+$plugin->version    = 2012021500;
+$plugin->requires   = 2010112400;
+$plugin->maturity   = MATURITY_BETA;
+$plugin->release    = "0.1.2";
