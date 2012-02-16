@@ -8,6 +8,10 @@
     text-align:left;
 }
 
+.block_twitter_search ul {
+  margin-left: 0px;
+}
+
 .block_twitter_search li.tweet {
     border-top:1px dotted #aaa;
     padding:4px;
