@@ -28,7 +28,7 @@ class block_twitter_search extends block_base{
         }
 
         $output = "";
-        $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#twitter';
+        $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
         $search_term_enc = urlencode($search_term);
         $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
         $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
