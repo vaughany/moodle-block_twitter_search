@@ -13,7 +13,7 @@
 }
 
 .block_twitter_search li.tweet {
-    border-top:1px dotted #aaa;
+    border-bottom:1px dotted #aaa;
     padding:4px;
     list-style: none;
 }
