@@ -53,7 +53,9 @@ class block_twitter_search extends block_base{
                 $output .= format_text($tweet->getElementsByTagName('content')->item(0)->textContent, FORMAT_HTML);
                 $output .= "</li>";
             }
-            $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>update</a>";
+            if ($CFG->enableajax){
+              $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>update</a>";
+            }
             $this->content = new stdClass;
             $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
             $this->content->text = $output;
