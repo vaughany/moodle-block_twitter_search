@@ -31,6 +31,10 @@ class block_twitter_search extends block_base{
         $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
         $search_term_enc = urlencode($search_term);
         $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
+        $username = (isset($this->config->show_usernames)) && $this->config->show_usernames;
+        $realname = (isset($this->config->show_names)) && $this->config->show_names;
+        $image = (isset($this->config->show_images)) && $this->config->show_images;
+        $update = (isset($this->config->show_update)) && $this->config->show_update;
         $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
         $PAGE->requires->js_init_call('M.block_twitter_search.init',array($search_term_enc,$numtweets));
         $ch = curl_init($url);
@@ -48,13 +52,27 @@ class block_twitter_search extends block_base{
                 $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
                 $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
                 $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
-                $output .= "<img src='$author_img' />";
+                if (($username || $realname) == false)
+                {
+                    // do nothing!
+                }
+                elseif ($username == false) {
+                    // we're assuming that real name is in the las parentheses (pe: SearchMoodle (Search Moodle Extension))
+                    $authorname = substr($authorname, strrpos($authorname, '(')+1, strrpos($authorname, ')')-(strrpos($authorname, '(')+1));
+                }
+                elseif ($realname == false) {
+                    // we take the first part of string, before the last parentheses
+                    $authorname = substr($authorname, 0, strrpos($authorname, '('));
+                }
+                if ($image == true){
+                    $output .= "<img src='$author_img' />";
+                }
                 $output .= "<a href='$authorlink'>$authorname</a>: ";
                 $output .= format_text($tweet->getElementsByTagName('content')->item(0)->textContent, FORMAT_HTML);
                 $output .= "</li>";
             }
-            if ($CFG->enableajax){
-              $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>update</a>";
+            if ($CFG->enableajax && $update){
+              $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
             }
             $this->content = new stdClass;
             $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
