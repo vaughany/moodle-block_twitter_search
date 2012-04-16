@@ -26,5 +26,17 @@ class block_twitter_search_edit_form extends block_edit_form {
         $mform->addElement('select', 'config_numtweets', get_string('numtweets', 'block_twitter_search'), range(1, 20));
         $mform->setDefault('config_numtweets', 2);
         $mform->setType('config_numtweets', PARAM_INT);
+        $mform->addElement('advcheckbox', 'config_show_names', get_string('show_names', 'block_twitter_search'));
+        $mform->setDefault('config_show_names', true);
+        $mform->setType('config_show_names', PARAM_BOOL);
+        $mform->addElement('advcheckbox', 'config_show_usernames', get_string('show_usernames', 'block_twitter_search'));
+        $mform->setDefault('config_show_usernames', true);
+        $mform->setType('config_show_usernames', PARAM_BOOL);
+        $mform->addElement('advcheckbox', 'config_show_images', get_string('show_images', 'block_twitter_search'));
+        $mform->setDefault('config_show_images', true);
+        $mform->setType('config_show_images', PARAM_BOOL);
+        $mform->addElement('advcheckbox', 'config_show_update', get_string('show_update', 'block_twitter_search'));
+        $mform->setDefault('config_show_update', true);
+        $mform->setType('config_show_update', PARAM_BOOL);
     }
 }
