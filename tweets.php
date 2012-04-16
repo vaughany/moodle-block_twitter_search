@@ -23,29 +23,28 @@ $search_term_enc = urlencode($search_term);
 $numtweets = $_GET['n'];
 $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
 $ch = curl_init($url);
-curl_setopt($ch, CURLOPT_HEADER,0);
+curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $xml = curl_exec($ch);
 curl_close($ch);
-if($xml != false){
+if ($xml != false) {
     $dom = DOMDocument::loadXML($xml);
-    $tweets = $dom->getElementsByTagName('entry'); ?>
-<?php
-    foreach ($tweets as $tweet) { 
+    $tweets = $dom->getElementsByTagName('entry');
+    foreach ($tweets as $tweet) {
         ?>
-<li class='tweet'>
-<?php
-    $author = $tweet->getElementsByTagName('author')->item(0);
-    $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
-    $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
-    $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
+        <li class="tweet">
+        <?php
+        $author = $tweet->getElementsByTagName('author')->item(0);
+        $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
+        $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
+        $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
         ?>
-<img src='<?php echo $author_img ?>' />
-<a href='$authorlink'><?php echo $authorname ?></a>
-<?php echo format_text($tweet->getElementsByTagName('content')->item(0)->textContent,FORMAT_HTML) ?>
-</li>
-<?php 
+        <img src="<?php echo $author_img; ?>" />
+        <a href="$authorlink"><?php echo $authorname; ?></a>
+        <?php echo format_text($tweet->getElementsByTagName('content')->item(0)->textContent, FORMAT_HTML); ?>
+        </li>
+        <?php
     }
-}else{
-  echo "Twitter is not available";
-}?>
+} else {
+    echo "Twitter is not available";
+}
