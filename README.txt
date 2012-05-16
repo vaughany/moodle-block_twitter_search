@@ -18,3 +18,4 @@ Note: If you're downloading this from github you'll want to put it all in a dire
 
 Multilingual support and Hebrew translation by Nadav Kavalerchik
 Catalan translation by Joan Queralt
+Spanish translation by Dennis Tobar
