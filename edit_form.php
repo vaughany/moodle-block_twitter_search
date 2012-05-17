@@ -20,6 +20,8 @@ class block_twitter_search_edit_form extends block_edit_form {
 
     protected function specific_definition($mform) {
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
+        $mform->addElement('text', 'config_title_block', get_string('title_block', 'block_twitter_search'));
+        $mform->setType('config_title_block', PARAM_MULTILANG);
         $mform->addElement('text', 'config_search_term', get_string('search_term', 'block_twitter_search'));
         $mform->setDefault('config_search_term', '#moodle');
         $mform->setType('config_search_term', PARAM_MULTILANG);

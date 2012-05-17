@@ -35,8 +35,8 @@ class block_twitter_search extends block_base{
         $realname = (isset($this->config->show_names)) ? $this->config->show_names : false;
         $image = (isset($this->config->show_images)) ? $this->config->show_images : true;
         $update = (isset($this->config->show_update)) ? $this->config->show_update : true;
+        $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
         $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
-        $PAGE->requires->js_init_call('M.block_twitter_search.init',array($search_term_enc,$numtweets));
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -72,10 +72,16 @@ class block_twitter_search extends block_base{
                 $output .= "</li>";
             }
             if ($CFG->enableajax && $update){
-              $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
+                $PAGE->requires->js_init_call('M.block_twitter_search.init',array($search_term_enc,$numtweets));
+                $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".$search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
             }
             $this->content = new stdClass;
-            $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
+            if ($title == false) {
+                $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
+            }
+            else {
+                $this->title = $title;
+            }
             $this->content->text = $output;
         } else {
             $this->content = new stdClass;
