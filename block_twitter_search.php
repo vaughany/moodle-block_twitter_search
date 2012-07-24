@@ -43,7 +43,8 @@ class block_twitter_search extends block_base{
         $xml = curl_exec($ch);
         curl_close($ch);
         if ($xml != false) {
-            $dom = DOMDocument::loadXML($xml);
+            $dom = new DOMDocument();
+            $dom->loadXML($xml);
             $tweets = $dom->getElementsByTagName('entry');
             $output .= "<ul class='block_twitter_search_tweets'>";
             foreach ($tweets as $tweet) {
