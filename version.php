@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright Kevin Hughes 2011
+// Copyright Kevin Hughes 2011.
 //
-// Version Info
+// Version info.
 
 $plugin->version    = 2012072500;
 $plugin->requires   = 2010112400;

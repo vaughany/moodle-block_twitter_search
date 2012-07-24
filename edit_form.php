@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright Kevin Hughes 2011
+// Copyright Kevin Hughes 2011.
 
 class block_twitter_search_edit_form extends block_edit_form {
 
