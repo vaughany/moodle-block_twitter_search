@@ -17,7 +17,11 @@
 // Copyright Kevin Hughes 2011.
 
 require_once(dirname(__FILE__).'/../../config.php');
+
 require_login();
+
+$PAGE->set_context($context = get_context_instance(CONTEXT_COURSE, $COURSE->id));
+
 $search_term = $_GET['q'];
 $search_term_enc = urlencode($search_term);
 $numtweets = $_GET['n'];
@@ -28,7 +32,9 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $xml = curl_exec($ch);
 curl_close($ch);
 if ($xml != false) {
-    $dom = DOMDocument::loadXML($xml);
+    //$dom = DOMDocument::loadXML($xml);
+    $dom = new DOMDocument();
+    $dom->loadXML($xml);
     $tweets = $dom->getElementsByTagName('entry');
     foreach ($tweets as $tweet) {
         ?>
@@ -46,5 +52,5 @@ if ($xml != false) {
         <?php
     }
 } else {
-    echo "Twitter is not available";
+    echo get_string('not_found', 'block_twitter_search');;
 }
