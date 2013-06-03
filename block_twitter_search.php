@@ -74,6 +74,8 @@ class block_twitter_search extends block_base {
                 $PAGE->requires->js_init_call('M.block_twitter_search.init', array($search_term_enc, $numtweets));
                 $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".
                     $search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
+            } else {
+                $output .= "</ul>";
             }
             $this->content = new stdClass;
             if ($title == false) {
