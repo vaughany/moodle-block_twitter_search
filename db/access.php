@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the vote block
+ * Capability definitions for the Twitter search block
  *
  * @package    block
  * @subpackage twitter_search
@@ -26,6 +26,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
+
+    // 'New' standard capability 'myaddinstance'.
+    'block/twitter_search:myaddinstance' => array (
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'archetypes'    => array (
+            'user'          => CAP_ALLOW,
+        ),
+        'clonepermissionsfrom'  => 'moodle/my:manageblocks',
+    ),
 
     // 'New' standard capability 'addinstance'.
     'block/twitter_search:addinstance' => array(
