@@ -22,21 +22,32 @@ class block_twitter_search extends block_base {
         $this->title = get_string('twitter_search', 'block_twitter_search');
     }
 
+    public function has_config() {
+        return true;
+    }
+
     public function get_content() {
         global $PAGE, $CFG;
         if ($this->content != null) {
             return $this->content;
         }
 
-        $output = "";
+        require_once('twitteroauth.php');
+
+        $output = '';
+        
         $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
-        $search_term_enc = urlencode($search_term);
+        //$search_term_enc = urlencode($search_term);
+        $search_term_enc = $search_term;
+
         $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
         $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
         $realname = (isset($this->config->show_names)) ? $this->config->show_names : false;
         $image = (isset($this->config->show_images)) ? $this->config->show_images : true;
         $update = (isset($this->config->show_update)) ? $this->config->show_update : true;
         $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
+        $type = (isset($this->config->tweettype)) ? $this->config->tweettype : recent;
+
         $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -57,7 +68,7 @@ class block_twitter_search extends block_base {
                 if (($username || $realname) == false) {
                     // Do nothing!
                 } else if ($username == false) {
-                    // We're assuming that real name is in the las parentheses (pe: SearchMoodle (Search Moodle Extension)).
+                    // We're assuming that real name is in the last parentheses (pe: SearchMoodle (Search Moodle Extension)).
                     $authorname = substr($authorname, strrpos($authorname, '(')+1, strrpos($authorname, ')')-(strrpos($authorname, '(')+1));
                 } else if ($realname == false) {
                     // We take the first part of string, before the last parentheses.

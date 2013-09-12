@@ -18,7 +18,7 @@
 //
 // Version info.
 
-$plugin->version    = 2013090600;
+$plugin->version    = 2013091200;
 $plugin->requires   = 2010112400;
 $plugin->maturity   = MATURITY_BETA;
-$plugin->release    = "0.2.3";
+$plugin->release    = "0.3.0";
