@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    // 'New' standard capability 'myaddinstance'.
+    // New standard capability 'myaddinstance'.
     'block/twitter_search:myaddinstance' => array (
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -37,7 +37,7 @@ $capabilities = array(
         'clonepermissionsfrom'  => 'moodle/my:manageblocks',
     ),
 
-    // 'New' standard capability 'addinstance'.
+    // New standard capability 'addinstance'.
     'block/twitter_search:addinstance' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_COURSE,

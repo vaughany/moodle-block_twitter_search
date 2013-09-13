@@ -62,10 +62,10 @@ class block_twitter_search extends block_base {
             );
 
             $output = '';
-            
-            $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
-            $search_term_enc = urlencode($search_term);
-            //$search_term_enc = $search_term;
+
+            $searchterm = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
+            $searchtermenc = urlencode($searchterm);
+            // $searchtermenc = $searchterm;
 
             $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
             $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
@@ -75,9 +75,9 @@ class block_twitter_search extends block_base {
             $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
             $type = (isset($this->config->tweettype)) ? $this->config->tweettype : 'recent';
 
-            $data = $connection->get('search/tweets', array('q' => $search_term_enc, 'count' => $numtweets));
+            $data = $connection->get('search/tweets', array('q' => $searchtermenc, 'count' => $numtweets));
 
-            if(isset($data->statuses)) {
+            if (isset($data->statuses)) {
 
                 $output .= '<ul class="block_twitter_search_tweets">';
                 foreach ($data->statuses as $status) {
@@ -88,7 +88,7 @@ class block_twitter_search extends block_base {
                     $author     = $status->user->screen_name;
                     $authorname = $status->user->name;
                     $authorimg  = $status->user->profile_image_url;
-                    //$authorlink = $status->user->url;
+                    // $authorlink = $status->user->url;
                     $authorlink = 'http://twitter.com/'.$author;
                     $tweet      = $status->text;
 
@@ -123,7 +123,7 @@ class block_twitter_search extends block_base {
 
                 $this->content = new stdClass;
                 if ($title == false) {
-                    $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
+                    $this->title = $searchterm . get_string('on_twitter', 'block_twitter_search');
                 } else {
                     $this->title = $title;
                 }

@@ -22,7 +22,7 @@ $settings->add(new admin_setting_heading(
     get_string('applicationsettingsinfo', 'block_twitter_search'),
     null
 ));
- 
+
 $settings->add(new admin_setting_configtext(
     'block_twitter_search_consumer_key',
     get_string('consumer_key', 'block_twitter_search'),

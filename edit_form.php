@@ -33,7 +33,7 @@ class block_twitter_search_edit_form extends block_edit_form {
         $mform->setType('config_numtweets', PARAM_INT);
 
         // New option: tweet types.
-        $mform->addElement('select', 'config_tweettype', get_string('tweettype', 'block_twitter_search'), 
+        $mform->addElement('select', 'config_tweettype', get_string('tweettype', 'block_twitter_search'),
             array('mixed' => 'Mixed', 'recent' => 'Recent', 'popular' => 'Popular'));
         $mform->setDefault('config_tweettype', 'recent');
         $mform->setType('config_tweettype', PARAM_MULTILANG);
