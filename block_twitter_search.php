@@ -34,71 +34,107 @@ class block_twitter_search extends block_base {
 
         require_once('twitteroauth.php');
 
-        $output = '';
-        
-        $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
-        //$search_term_enc = urlencode($search_term);
-        $search_term_enc = $search_term;
-
-        $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
-        $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
-        $realname = (isset($this->config->show_names)) ? $this->config->show_names : false;
-        $image = (isset($this->config->show_images)) ? $this->config->show_images : true;
-        $update = (isset($this->config->show_update)) ? $this->config->show_update : true;
-        $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
-        $type = (isset($this->config->tweettype)) ? $this->config->tweettype : recent;
-
-        $url = "http://search.twitter.com/search.atom?q=$search_term_enc&rpp=$numtweets";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $xml = curl_exec($ch);
-        curl_close($ch);
-        if ($xml != false) {
-            $dom = new DOMDocument();
-            $dom->loadXML($xml);
-            $tweets = $dom->getElementsByTagName('entry');
-            $output .= "<ul class='block_twitter_search_tweets'>";
-            foreach ($tweets as $tweet) {
-                $output .= "<li class='tweet'>";
-                $author = $tweet->getElementsByTagName('author')->item(0);
-                $author_img = $tweet->getElementsByTagName('link')->item(1)->attributes->getNamedItem("href")->nodeValue;
-                $authorname = $author->getElementsByTagName('name')->item(0)->textContent;
-                $authorlink = $author->getElementsByTagName('uri')->item(0)->textContent;
-                if (($username || $realname) == false) {
-                    // Do nothing!
-                } else if ($username == false) {
-                    // We're assuming that real name is in the last parentheses (pe: SearchMoodle (Search Moodle Extension)).
-                    $authorname = substr($authorname, strrpos($authorname, '(')+1, strrpos($authorname, ')')-(strrpos($authorname, '(')+1));
-                } else if ($realname == false) {
-                    // We take the first part of string, before the last parentheses.
-                    $authorname = substr($authorname, 0, strrpos($authorname, '('));
-                }
-                if ($image == true) {
-                    $output .= "<img src='$author_img' />";
-                }
-                $output .= "<a href='$authorlink'>$authorname</a>: ";
-                $output .= format_text($tweet->getElementsByTagName('content')->item(0)->textContent, FORMAT_HTML);
-                $output .= "</li>";
-            }
-            if ($CFG->enableajax && $update) {
-                $PAGE->requires->js_init_call('M.block_twitter_search.init', array($search_term_enc, $numtweets));
-                $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".
-                    $search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
-            } else {
-                $output .= "</ul>";
-            }
-            $this->content = new stdClass;
-            if ($title == false) {
-                $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
-            } else {
-                $this->title = $title;
-            }
-            $this->content->text = $output;
-        } else {
-            $this->content = new stdClass;
-            $this->content->text = get_string('not_found', 'block_twitter_search');
+        $twitterautherror = false;
+        if (!isset($CFG->block_twitter_search_consumer_key) || empty($CFG->block_twitter_search_consumer_key)) {
+            $twitterautherror = true;
         }
+        if (!isset($CFG->block_twitter_search_consumer_secret) || empty($CFG->block_twitter_search_consumer_secret)) {
+            $twitterautherror = true;
+        }
+        if (!isset($CFG->block_twitter_search_access_token) || empty($CFG->block_twitter_search_access_token)) {
+            $twitterautherror = true;
+        }
+        if (!isset($CFG->block_twitter_search_access_token_secret) || empty($CFG->block_twitter_search_access_token_secret)) {
+            $twitterautherror = true;
+        }
+        if ($twitterautherror) {
+
+            $this->content = new stdClass;
+            $this->content->text = '<p>'.get_string('error-twitterauth', 'block_twitter_search').'</p>';
+
+        } else {
+
+            $connection = new TwitterOAuth(
+                $CFG->block_twitter_search_consumer_key,
+                $CFG->block_twitter_search_consumer_secret,
+                $CFG->block_twitter_search_access_token,
+                $CFG->block_twitter_search_access_token_secret
+            );
+
+            $output = '';
+            
+            $search_term = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
+            $search_term_enc = urlencode($search_term);
+            //$search_term_enc = $search_term;
+
+            $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
+            $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
+            $realname = (isset($this->config->show_names)) ? $this->config->show_names : false;
+            $image = (isset($this->config->show_images)) ? $this->config->show_images : true;
+            $update = (isset($this->config->show_update)) ? $this->config->show_update : true;
+            $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
+            $type = (isset($this->config->tweettype)) ? $this->config->tweettype : 'recent';
+
+            $data = $connection->get('search/tweets', array('q' => $search_term_enc, 'count' => $numtweets));
+
+            if(isset($data->statuses)) {
+
+                $output .= '<ul class="block_twitter_search_tweets">';
+                foreach ($data->statuses as $status) {
+
+                    $output .= '<li class="tweet">';
+
+                    // Get all the nice information from the returned data.
+                    $author     = $status->user->screen_name;
+                    $authorname = $status->user->name;
+                    $authorimg  = $status->user->profile_image_url;
+                    //$authorlink = $status->user->url;
+                    $authorlink = 'http://twitter.com/'.$author;
+                    $tweet      = $status->text;
+
+                    // Formatting the user's username and/or name.
+                    if ($username == false && $realname == false) {
+                        $authortext = '';
+                    } else if ($username == true && $realname == true) {
+                        $authortext = '@'.$author.' ('.$authorname.'): ';
+                    } else if ($username == true) {
+                        $authortext = '@'.$author.': ';
+                    } else if ($realname == true) {
+                        $authortext = $authorname.': ';
+                    }
+
+                    // Adding in the image.
+                    if ($image == true) {
+                        $output .= '<img src="'.$authorimg.'">';
+                    }
+
+                    $output .= '<a href="'.$authorlink.'">'.$authortext.'</a>';
+                    $output .= format_text($tweet, FORMAT_HTML);
+                    $output .= '</li>';
+                }
+
+//                if ($CFG->enableajax && $update) {
+//                    $PAGE->requires->js_init_call('M.block_twitter_search.init', array($search_term_enc, $numtweets));
+//                    $output .= "</ul><a class='block_twitter_search_refresh' href='". $CFG->wwwroot ."/blocks/twitter_search/tweets.php?q=".
+//                        $search_term_enc."&n=".$numtweets."' onclick='return false'>".get_string('update', 'block_twitter_search')."</a>";
+//                } else {
+                    $output .= '</ul>';
+//                }
+
+                $this->content = new stdClass;
+                if ($title == false) {
+                    $this->title = $search_term . get_string('on_twitter', 'block_twitter_search');
+                } else {
+                    $this->title = $title;
+                }
+                $this->content->text = $output;
+            } else {
+                // No statuses returned.
+                $this->content = new stdClass;
+                $this->content->text = '<p>'.get_string('not_found', 'block_twitter_search').'</p>';
+            }
+
+        } // END Twitter auth check.
 
     }
 
