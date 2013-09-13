@@ -17,35 +17,35 @@
 // Copyright Paul Vaughan 2013.
 
 $settings->add(new admin_setting_heading(
-    'header',
+    'block_twitter_search_header',
     get_string('applicationsettings', 'block_twitter_search'),
     get_string('applicationsettingsinfo', 'block_twitter_search'),
     null
 ));
  
 $settings->add(new admin_setting_configtext(
-    'consumer_key',
+    'block_twitter_search_consumer_key',
     get_string('consumer_key', 'block_twitter_search'),
     null,
     null
 ));
 
 $settings->add(new admin_setting_configtext(
-    'consumer_secret',
+    'block_twitter_search_consumer_secret',
     get_string('consumer_secret', 'block_twitter_search'),
     null,
     null
 ));
 
 $settings->add(new admin_setting_configtext(
-    'access_token',
+    'block_twitter_search_access_token',
     get_string('access_token', 'block_twitter_search'),
     null,
     null
 ));
 
 $settings->add(new admin_setting_configtext(
-    'access_token_secret',
+    'block_twitter_search_access_token_secret',
     get_string('access_token_secret', 'block_twitter_search'),
     null,
     null
