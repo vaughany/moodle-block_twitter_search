@@ -65,7 +65,6 @@ class block_twitter_search extends block_base {
 
             $searchterm = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
             $searchtermenc = urlencode($searchterm);
-            // $searchtermenc = $searchterm;
 
             $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
             $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
@@ -88,11 +87,11 @@ class block_twitter_search extends block_base {
                     $author     = $status->user->screen_name;
                     $authorname = $status->user->name;
                     $authorimg  = $status->user->profile_image_url;
-                    // $authorlink = $status->user->url;
                     $authorlink = 'http://twitter.com/'.$author;
                     $tweet      = $status->text;
 
                     // Formatting the user's username and/or name.
+                    // TODO: The colon and space shouldn't appear in the link!!
                     if ($username == false && $realname == false) {
                         $authortext = '';
                     } else if ($username == true && $realname == true) {
