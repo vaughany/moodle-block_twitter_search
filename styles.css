@@ -22,3 +22,7 @@
   float: left;
   margin-right: 3px;
 }
+
+.block_twitter_search li img.ts_embedded_img {
+  float: none;
+}

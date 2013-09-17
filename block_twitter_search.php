@@ -71,13 +71,14 @@ class block_twitter_search extends block_base {
             $searchterm = (isset($this->config->search_term)) ? $this->config->search_term : '#moodle';
             $searchtermenc = urlencode($searchterm);
 
-            $numtweets = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
-            $username = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
-            $realname = (isset($this->config->show_names)) ? $this->config->show_names : false;
-            $image = (isset($this->config->show_images)) ? $this->config->show_images : true;
-            $update = (isset($this->config->show_update)) ? $this->config->show_update : true;
-            $title = (isset($this->config->title_block)) ? $this->config->title_block : false;
-            $type = (isset($this->config->tweettype)) ? $this->config->tweettype : 'recent';
+            $numtweets      = (isset($this->config->numtweets)) ? $this->config->numtweets : 5;
+            $username       = (isset($this->config->show_usernames)) ? $this->config->show_usernames : true;
+            $realname       = (isset($this->config->show_names)) ? $this->config->show_names : false;
+            $image          = (isset($this->config->show_images)) ? $this->config->show_images : true;
+            $update         = (isset($this->config->show_update)) ? $this->config->show_update : true;
+            $title          = (isset($this->config->title_block)) ? $this->config->title_block : false;
+            $type           = (isset($this->config->tweettype)) ? $this->config->tweettype : 'recent';
+            $expandimglinks = (isset($this->config->expand_img_links)) ? $this->config->expand_img_links : true;
 
             $data = $connection->get('search/tweets', array('q' => $searchtermenc, 'count' => $numtweets));
 
@@ -145,7 +146,11 @@ class block_twitter_search extends block_base {
                     // Replacing media links with linked media links. Again, it's not perfect.
                     if (isset($status->entities->media)) {
                         foreach ($status->entities->media as $url) {
-                            $tweet = preg_replace('#'.$url->url.'#i', '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
+                            if ($expandimglinks) {
+                                $tweet = preg_replace('#'.$url->url.'#i', '<a href="'.$url->url.'">'.$url->display_url.'<img class="ts_embedded_img" src="'.$url->media_url.':thumb"></a>', $tweet);
+                            } else {
+                                $tweet = preg_replace('#'.$url->url.'#i', '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
+                            }
                         }
                     }
 

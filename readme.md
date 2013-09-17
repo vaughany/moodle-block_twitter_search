@@ -89,6 +89,7 @@ You can recreate your "access token" and "access token secret" strings at any ti
  * __Show @usernames__: Shows which user authored the tweet by their username.
  * __Show real names__: Shows which user authored the tweet by their real name (if available).
  * __Show user images__: Shows the profile image for the tweet's author.
+ * __Expand embedded images__: If a tweet contains a link to an image, expand it to a clickable thumbnail. Default is expand.
  * __Show update link__: shows a link to reload the tweets without reloading the page.
 
 6. Save the configuration. The block will reload with the new settings.  
@@ -123,7 +124,7 @@ This release should very much be considered a work-in-progress release, purely t
 
 ## Releases
 
-__2013-09-17__: v0.4.1 (beta). Added in clickable #hashtags, @usernames, links and 'media links' (e.g. images hosted at pic.twitter.com) following the same patterns as Twitter itself.
+__2013-09-17__: v0.4.2 (beta). Added in clickable #hashtags, @usernames, links and 'media links' (e.g. images hosted at pic.twitter.com) following the same patterns as Twitter itself. Embedded images now expand into clickable thumbnail links, or not (on by default).
 
 __2013-09-16__: v0.3 (beta). Updated to work with Twitter's new REST 1.1 API. Some core features not yet implemented.
 
