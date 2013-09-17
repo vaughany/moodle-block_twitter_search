@@ -124,6 +124,7 @@ This release should very much be considered a work-in-progress release, purely t
 ## Releases
 
 __2013-09-17__: v0.4 (beta). Added in clickable #hashtags, @usernames and links, following the same patterns as Twitter itself.
+
 __2013-09-16__: v0.3 (beta). Updated to work with Twitter's new REST 1.1 API. Some core features not yet implemented.
 
 
