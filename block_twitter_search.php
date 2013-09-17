@@ -27,7 +27,7 @@ class block_twitter_search extends block_base {
     }
 
     public function get_content() {
-        
+
         function cmp($a, $b) {
             return strlen($b)-strlen($a);
         }
@@ -127,22 +127,30 @@ class block_twitter_search extends block_base {
 
                     // Replacing #hashtags with linked #hashtags. It's not perfect.
                     foreach ($allhashtags as $hashtag) {
-                        $tweet = preg_replace('/ #'.$hashtag.'/', ' <a href="https://twitter.com/search?q='.urlencode('#'.$hashtag).'">#'.$hashtag.'</a>', $tweet);
+                        $tweet = preg_replace('/ #'.$hashtag.'/i',
+                            ' <a href="https://twitter.com/search?q='.urlencode('#'.$hashtag).'">#'.$hashtag.'</a>', $tweet);
+                    }
+
+                    // Replacing @usernames with linked @usernames. It's not perfect.
+                    foreach ($status->entities->user_mentions as $usermention) {
+                        $tweet = preg_replace('/@'.$usermention->screen_name.'/i',
+                            '<a href="https://twitter.com/'.$usermention->screen_name.'">'.'@'.$usermention->screen_name.'</a>', $tweet);
                     }
 
                     // Replacing links with linked links. Again, it's not perfect.
                     foreach ($status->entities->urls as $url) {
-                        $tweet = str_replace($url->url, '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
+                        $tweet = preg_replace('#'.$url->url.'#i', '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
                     }
 
-                    // Replacing @usernames with linked @usernames. It's not perfect.
-                    foreach ($status->entities->user_mentions as $user_mention) {
-                        $tweet = str_replace('@'.$user_mention->screen_name, '<a href="https://twitter.com/'.$user_mention->screen_name.'">'.'@'.$user_mention->screen_name.'</a>', $tweet);
+                    // Replacing media links with linked media links. Again, it's not perfect.
+                    if (isset($status->entities->media)) {
+                        foreach ($status->entities->media as $url) {
+                            $tweet = preg_replace('#'.$url->url.'#i', '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
+                        }
                     }
 
                     $output .= '<a href="'.$authorlink.'">'.$authortext.'</a> ';
                     $output .= format_text($tweet, FORMAT_HTML);
-                    //$output .= $tweet;
                     $output .= '</li>';
                 }
 

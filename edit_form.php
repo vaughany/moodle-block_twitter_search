@@ -28,7 +28,7 @@ class block_twitter_search_edit_form extends block_edit_form {
         $mform->setDefault('config_search_term', '#moodle');
         $mform->setType('config_search_term', PARAM_MULTILANG);
 
-        $mform->addElement('select', 'config_numtweets', get_string('numtweets', 'block_twitter_search'), 
+        $mform->addElement('select', 'config_numtweets', get_string('numtweets', 'block_twitter_search'),
             array(1 => 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15 => 15, 20 =>20, 25 => 25, 30 => 30, 40 => 40, 50 => 50));
         $mform->setDefault('config_numtweets', 5);
         $mform->setType('config_numtweets', PARAM_INT);

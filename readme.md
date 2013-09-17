@@ -117,13 +117,13 @@ This release should very much be considered a work-in-progress release, purely t
 
 * Multilingual support and Hebrew translation by Nadav Kavalerchik.
 * Catalan translation by Joan Queralt.
-* Spanish translation by Dennis Tobar.
+* Spanish translation by [Dennis Tobar](https://github.com/dennistobar).
 * [Abraham Williams](https://github.com/abraham) for the '[twitteroauth](https://github.com/abraham/twitteroauth)' Twitter API PHP library.
 
 
 ## Releases
 
-__2013-09-17__: v0.4 (beta). Added in clickable #hashtags, @usernames and links, following the same patterns as Twitter itself.
+__2013-09-17__: v0.4.1 (beta). Added in clickable #hashtags, @usernames, links and 'media links' (e.g. images hosted at pic.twitter.com) following the same patterns as Twitter itself.
 
 __2013-09-16__: v0.3 (beta). Updated to work with Twitter's new REST 1.1 API. Some core features not yet implemented.
 
