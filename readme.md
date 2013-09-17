@@ -110,24 +110,26 @@ Any search which can be typed into [search.twitter.com](http://search.twitter.co
 This release should very much be considered a work-in-progress release, purely to get the block working with the new API. Common features such as clickable hashtags and usernames (let alone actual links) have not yet been implemented. This will come in a future release.
 
 * Make the AJAX-refresh work properly without duplicating code.
-* Add in a blacklist feature (tweets from user X, hashtag / keyword X).
+* Add in a blacklist feature (tweets from user X, hashtag / keyword X). (In progress.)
+
 
 ## With thanks to
 
-* Multilingual support and Hebrew translation by Nadav Kavalerchik
-* Catalan translation by Joan Queralt
-* Spanish translation by Dennis Tobar
+* Multilingual support and Hebrew translation by Nadav Kavalerchik.
+* Catalan translation by Joan Queralt.
+* Spanish translation by Dennis Tobar.
 * [Abraham Williams](https://github.com/abraham) for the '[twitteroauth](https://github.com/abraham/twitteroauth)' Twitter API PHP library.
 
 
 ## Releases
 
+__2013-09-17__: v0.4 (beta). Added in clickable #hashtags, @usernames and links, following the same patterns as Twitter itself.
 __2013-09-16__: v0.3 (beta). Updated to work with Twitter's new REST 1.1 API. Some core features not yet implemented.
 
 
 ## Licence
 
-Copyright &copy; 2011-2013  Kevin Hughes <kevtufc@gmail.com>. 
+Copyright &copy; 2011-2013 Kevin Hughes <kevtufc@gmail.com>. 
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

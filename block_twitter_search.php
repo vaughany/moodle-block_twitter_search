@@ -27,6 +27,11 @@ class block_twitter_search extends block_base {
     }
 
     public function get_content() {
+        
+        function cmp($a, $b) {
+            return strlen($b)-strlen($a);
+        }
+
         global $PAGE, $CFG;
         if ($this->content != null) {
             return $this->content;
@@ -81,25 +86,29 @@ class block_twitter_search extends block_base {
                 $output .= '<ul class="block_twitter_search_tweets">';
                 foreach ($data->statuses as $status) {
 
-                    $output .= '<li class="tweet">';
+                    // Beginnings of a blacklist.
+                    if ($status->user->screen_name == 'e1doom') {
+                        break;
+                    }
 
                     // Get all the nice information from the returned data.
                     $author     = $status->user->screen_name;
                     $authorname = $status->user->name;
                     $authorimg  = $status->user->profile_image_url;
                     $authorlink = 'http://twitter.com/'.$author;
-                    $tweet      = $status->text;
+                    $tweet      = ' '.$status->text;
+
+                    $output .= '<li class="tweet">';
 
                     // Formatting the user's username and/or name.
-                    // TODO: The colon and space shouldn't appear in the link!!
                     if ($username == false && $realname == false) {
                         $authortext = '';
                     } else if ($username == true && $realname == true) {
-                        $authortext = '@'.$author.' ('.$authorname.'): ';
+                        $authortext = '@'.$author.' ('.$authorname.')';
                     } else if ($username == true) {
-                        $authortext = '@'.$author.': ';
+                        $authortext = '@'.$author.'';
                     } else if ($realname == true) {
-                        $authortext = $authorname.': ';
+                        $authortext = $authorname.'';
                     }
 
                     // Adding in the image.
@@ -107,8 +116,33 @@ class block_twitter_search extends block_base {
                         $output .= '<img src="'.$authorimg.'">';
                     }
 
-                    $output .= '<a href="'.$authorlink.'">'.$authortext.'</a>';
+                    // Replacing #hashtags with linked #hashtags. It's not perfect.
+                    $allhashtags = array();
+                    foreach ($status->entities->hashtags as $hashtag) {
+                        $allhashtags[] = $hashtag->text;
+                    }
+
+                    // Sorting the hashtags into length order.
+                    usort($allhashtags, "cmp");
+
+                    // Replacing #hashtags with linked #hashtags. It's not perfect.
+                    foreach ($allhashtags as $hashtag) {
+                        $tweet = preg_replace('/ #'.$hashtag.'/', ' <a href="https://twitter.com/search?q='.urlencode('#'.$hashtag).'">#'.$hashtag.'</a>', $tweet);
+                    }
+
+                    // Replacing links with linked links. Again, it's not perfect.
+                    foreach ($status->entities->urls as $url) {
+                        $tweet = str_replace($url->url, '<a href="'.$url->url.'">'.$url->display_url.'</a>', $tweet);
+                    }
+
+                    // Replacing @usernames with linked @usernames. It's not perfect.
+                    foreach ($status->entities->user_mentions as $user_mention) {
+                        $tweet = str_replace('@'.$user_mention->screen_name, '<a href="https://twitter.com/'.$user_mention->screen_name.'">'.'@'.$user_mention->screen_name.'</a>', $tweet);
+                    }
+
+                    $output .= '<a href="'.$authorlink.'">'.$authortext.'</a> ';
                     $output .= format_text($tweet, FORMAT_HTML);
+                    //$output .= $tweet;
                     $output .= '</li>';
                 }
 
